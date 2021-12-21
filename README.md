@@ -60,6 +60,8 @@ To download the repository follow these simple steps:
 ```bash
 git clone https://github.com/linsalrob/CompareReferences.git
 cd CompareReferences
+python3.9 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
 python3 src/CompareReferences.py 
 ```
