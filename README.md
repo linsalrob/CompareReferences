@@ -1,3 +1,9 @@
+[![Edwards Lab](https://img.shields.io/badge/Bioinformatics-EdwardsLab-03A9F4)](https://edwards.sdsu.edu/research)
+[![DOI](https://www.zenodo.org/badge/440388622.svg)](https://www.zenodo.org/badge/latestdoi/440388622)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![GitHub language count](https://img.shields.io/github/languages/count/linsalrob/PyFBA)
+
+
 # CompareReferences
 Compare References from two different sources.
 
