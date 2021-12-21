@@ -8,11 +8,16 @@ class FileReader:
 
     def __init__(self, master):
         self.frame = tk.Frame(master)
-        self.frame.pack()
+        self.frame.pack(expand=False)
         self.textpane = tk.Frame(master)
-        self.textpane.pack(side=tk.BOTTOM)
-        self.text = tk.Text(self.textpane)
-        self.text.pack(expand=1)
+        self.textpane.pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+        # set a text pane with a scrollbar
+        scrollbar = tk.Scrollbar(self.textpane)
+        self.text = tk.Text(self.textpane, yscrollcommand=scrollbar.set)
+        scrollbar.config(command=self.text.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.text.pack(fill=tk.BOTH, expand=True)
 
         self.text.insert(tk.END, "Please choose a Google file and an ORCID file above.")
 
