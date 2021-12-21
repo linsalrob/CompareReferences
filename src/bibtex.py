@@ -66,12 +66,13 @@ def bibtex_titles(bibds, verbose=False):
     titlesds = {}
     if verbose:
         sys.stderr.write("Parsing bibtex\n")
+    unwanted = ['{', '}', '[', ']', '`', "'", '"']
     for e in bibds.entries:
         try:
             if 'title' in bibds.entries[e].fields:
                 t = bibds.entries[e].fields['title'].lower()
-                t = t.replace('{', '')
-                t = t.replace('}', '')
+                for c in unwanted:
+                    t = t.replace(c, '')
                 titlesds[t.lower()] = e
         except Exception as ex:
             sys.stderr.write(f"Error parsing entry: {e}\n")
@@ -99,7 +100,7 @@ def bibtex_differences(google_bib, google_title, orcid_bib, orcid_title, verbose
     g_bib = pybtex.database.BibliographyData(entries={google_title[e]: google_bib.entries[google_title[e]] for e in dg})
     o_bib = pybtex.database.BibliographyData(entries={orcid_title[e]: orcid_bib.entries[orcid_title[e]] for e in do})
 
-    return g_bib, o_bib
+    return g_bib, o_bib, len(dg), len(do)
 
 
 if __name__ == '__main__':

@@ -32,8 +32,8 @@ class FileReader:
         self.ocbutton.grid(row=1, column=0)
         self.ocrefs = tk.Label(self.frame, text="No references read yet")
         self.ocrefs.grid(row=1, column=1)
-        self.gnoto = tk.Button(self.frame, text="Google Not ORCID", command=self.google_not_orcid, state="disabled")
         self.comp = tk.Button(self.frame, text="Compare Both", command=self.compare_refs, state="disabled")
+        self.gnoto = tk.Button(self.frame, text="Google Not ORCID", command=self.google_not_orcid, state="disabled")
         self.onotg = tk.Button(self.frame, text="ORCID Not Google", command=self.orcid_not_google, state="disabled")
         self.comp.grid(row=2, columnspan=2)
         self.gnoto.grid(row=3, column=0)
@@ -46,6 +46,8 @@ class FileReader:
         self.orcid_titles = None
         self.g_bib = None
         self.o_bib = None
+        self.google_only = 0
+        self.orcid_only = 0
 
     def get_file(self, which):
         filetypes = (
@@ -80,8 +82,10 @@ class FileReader:
             self.gnoto.config(state="active")
             self.onotg.config(state="active")
             self.text.delete(1.0, 'end')
-            self.g_bib, self.o_bib = bibtex_differences(self.google_bib, self.google_titles, self.orcid_bib,
-                                                        self.orcid_titles, False)
+            self.g_bib, self.o_bib, self.google_only, self.orcid_only = bibtex_differences(
+                self.google_bib, self.google_titles, self.orcid_bib, self.orcid_titles, False)
+            self.gnoto.config(text=f"Google not ORCID ({self.google_only} refs)")
+            self.onotg.config(text=f"ORCID not Google ({self.orcid_only} refs)")
             self.text.insert(tk.END, "Ready to compare the files!")
         elif self.orcid_file:
             self.text.delete(1.0, 'end')
