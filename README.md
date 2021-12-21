@@ -42,3 +42,40 @@ reference format.
 ![ORCID checkbox](images/orcid4.png)
 6. This will download a file, which by default is called `works.bib`
 
+## Compare the References
+
+You can either download and run the executable, or download this Git repository
+and install the modules.
+
+### Use the prebuilt executable
+
+This is the easiest way, just download the appropriate executable and use it!
+
+### Use the repository
+
+This is the safest way, because you can see the code you are running!
+
+To download the repository follow these simple steps:
+
+```bash
+git clone https://github.com/linsalrob/CompareReferences.git
+cd CompareReferences
+pip install -r requirements.txt
+python3 src/CompareReferences.py 
+```
+
+Either way, you will have the window open to read Google Scholar and ORCID files.
+
+1. Read your Google Scholar file. Choose read Google Scholar from the top menu:<br />
+![Import GS](images/cr1.png)
+2. Once you have read that, the button will be inactive and you will see how many references were read from that file.
+Click on the Read ORCID file to do the same for ORCID:<br />
+![Import GS](images/cr2.png)
+3. Once you have read both files, you will see the number of references in each and the
+comparison buttons will be available:<br />
+![Import GS](images/cr3.png)
+
+   1. `Compare Both` lists references unique to Google and then references in ORCID
+   2. `Google Not ORCID` lists the references unique to Google
+   3. `ORCID Not Google` lists the references unique to ORCID
+4. You can copy and paste the references, or edit them in this text box 
