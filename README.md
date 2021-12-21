@@ -86,4 +86,26 @@ comparison buttons will be available:<br />
    1. `Compare Both` lists references unique to Google and then references in ORCID
    2. `Google Not ORCID` lists the references unique to Google
    3. `ORCID Not Google` lists the references unique to ORCID
-4. You can copy and paste the references, or edit them in this text box 
+4. You can copy and paste the references, or edit them in this text box
+
+## Now what?
+
+You will notice that we match references by their titles, and try some (but not much)
+fuzzy matching. However, we are not perfect at matching and would rather tell you
+some citations that maybe different but are not.
+
+I recommend having the two bibtex files open in a text editor, and then going down 
+the list of unique citations and looking to see if you can find it, or something similar,
+in the bibtex file. Often, I search for a unique name or abbreviation. Most of the time,
+especially for older papers, the difference is subtle, sometimes punctuation or a word like
+`survey` in one citation that is `analysis` in another. 
+
+However, often a paper is missing and so you need to add that to the appropriate repository. 
+Sometimes, of course, (especially with Google), there are papers by other authors
+that have crept into your list and shouldn't be there. Tsk, tsk!
+
+You can delete and edit things in the text viewer, but please note that this field is not
+saved, so any changes will be lost to the ether!
+
+Sometimes, like the one shown in this final image, it is a biorXiv paper.<br />
+![biorXiv rules and should always be included](images/cr4.png)
