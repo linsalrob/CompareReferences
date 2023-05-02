@@ -79,6 +79,31 @@ def bibtex_titles(bibds, verbose=False):
             print(ex)
     return titlesds
 
+def bibtex_titles_fuzzy(bibds, verbose=False):
+    """
+    Convert the bibtex db to a list of titles. This strips all non 
+    [A-Za-z0-9] characters.
+    :param bibds: the bibtex datastructure
+    :type bibds: a pybbtex database
+    :param verbose: more output
+    :type verbose: bool
+    :return: a dict of titles
+    :rtype: dict
+    """
+    titlesds = {}
+    if verbose:
+        sys.stderr.write("Parsing bibtex\n")
+    for e in bibds.entries:
+        try:
+            if 'title' in bibds.entries[e].fields:
+                s = bibds.entries[e].fields['title'].lower()
+                t = re.sub(r'[\W_]+', '', s)
+                titlesds[t.lower()] = e
+        except Exception as ex:
+            sys.stderr.write(f"Error parsing entry: {e}\n")
+            print(ex)
+    return titlesds
+
 
 def bibtexfile_to_titles(bibtexfile, verbose):
     """
@@ -86,6 +111,14 @@ def bibtexfile_to_titles(bibtexfile, verbose):
     """
     bibds = parse_bibtex_file(bibtexfile, verbose)
     return bibtex_titles(bibds, verbose)
+
+
+def bibtexfile_to_titles_fuzzy(bibtexfile, verbose):
+    """
+    Convert a bibtex file to just some titles
+    """
+    bibds = parse_bibtex_file(bibtexfile, verbose)
+    return bibtex_titles_fuzzy(bibds, verbose)
 
 
 def bibtex_differences(google_bib, google_title, orcid_bib, orcid_title, verbose=False):

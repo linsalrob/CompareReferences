@@ -20,6 +20,7 @@ class FileReader:
         self.text.pack(fill=tk.BOTH, expand=True)
 
         self.text.insert(tk.END, "Please choose a Google file and an ORCID file above.")
+        self.fuzzier = tk.Checkbutton(self.frame, text="Use even fuzzier matching")
 
         self.gsbutton = tk.Button(self.frame, text="Choose the Google Scholar file", fg='black',
                                   command=lambda: self.get_file("Google"))
@@ -67,14 +68,21 @@ class FileReader:
             self.gsbutton.config(state="disabled")
             self.google_file = filename
             self.google_bib = parse_bibtex_file(self.google_file, False)
-            self.google_titles = bibtex_titles(self.google_bib, False)
+            if self.fuzzier:
+                self.google_titles = bibtex_titles_fuzzy(self.google_bib, False)
+            else:
+                self.google_titles = bibtex_titles(self.google_bib, False)
             self.gsrefs.config(text=f"Read {len(self.google_titles)} references")
 
         if which == 'ORCID':
             self.ocbutton.config(state="disabled")
             self.orcid_file = filename
             self.orcid_bib = parse_bibtex_file(self.orcid_file, False)
-            self.orcid_titles = bibtex_titles(self.orcid_bib, False)
+            if self.fuzzier:
+                self.orcid_titles = bibtex_titles_fuzzy(self.orcid_bib, False)
+            else:
+                self.orcid_titles = bibtex_titles(self.orcid_bib, False)
+
             self.ocrefs.config(text=f"Read {len(self.orcid_titles)} references")
 
         if self.orcid_file and self.google_file:
