@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
-from bibtex import parse_bibtex_file, bibtex_titles, bibtex_differences
+from bibtex import parse_bibtex_file, bibtex_titles, bibtex_titles_fuzzy, bibtex_differences
 
 
 class FileReader:
@@ -21,24 +21,25 @@ class FileReader:
 
         self.text.insert(tk.END, "Please choose a Google file and an ORCID file above.")
         self.fuzzier = tk.Checkbutton(self.frame, text="Use even fuzzier matching")
+        self.fuzzier.grid(row=0, columnspan=2)
 
         self.gsbutton = tk.Button(self.frame, text="Choose the Google Scholar file", fg='black',
                                   command=lambda: self.get_file("Google"))
-        self.gsbutton.grid(row=0, column=0)
+        self.gsbutton.grid(row=1, column=0)
         self.gsrefs = tk.Label(self.frame, text="No references read yet")
-        self.gsrefs.grid(row=0, column=1)
+        self.gsrefs.grid(row=1, column=1)
 
         self.ocbutton = tk.Button(self.frame, text="Choose the ORCID file", fg='black',
                                   command=lambda: self.get_file("ORCID"))
-        self.ocbutton.grid(row=1, column=0)
+        self.ocbutton.grid(row=2, column=0)
         self.ocrefs = tk.Label(self.frame, text="No references read yet")
-        self.ocrefs.grid(row=1, column=1)
+        self.ocrefs.grid(row=2, column=1)
         self.comp = tk.Button(self.frame, text="Compare Both", command=self.compare_refs, state="disabled")
         self.gnoto = tk.Button(self.frame, text="Google Not ORCID", command=self.google_not_orcid, state="disabled")
         self.onotg = tk.Button(self.frame, text="ORCID Not Google", command=self.orcid_not_google, state="disabled")
-        self.comp.grid(row=2, columnspan=2)
-        self.gnoto.grid(row=3, column=0)
-        self.onotg.grid(row=3, column=1)
+        self.comp.grid(row=3, columnspan=2)
+        self.gnoto.grid(row=4, column=0)
+        self.onotg.grid(row=4, column=1)
         self.google_file = None
         self.orcid_file = None
         self.google_bib = None
@@ -52,9 +53,9 @@ class FileReader:
 
     def get_file(self, which):
         filetypes = (
+            ('All files', '*.*'),
             ('Text files', '*.TXT'),
             ('Bib files', '*.BIB'),
-            ('All files', '*.*'),
         )
 
         filename = tk.filedialog.askopenfilename(
