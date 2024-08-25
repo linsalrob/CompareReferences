@@ -53,7 +53,7 @@ def parse_bibtex_file(bibtexf, verbose=False):
     return bt
 
 
-def bibtex_titles(bibds, verbose=False):
+def bibtex_titles(bibds, errata=False, zenodo=False, pubonly=False, verbose=False):
     """
     Convert the bibtex db to a list of titles
     :param bibds: the bibtex datastructure
@@ -69,17 +69,23 @@ def bibtex_titles(bibds, verbose=False):
     unwanted = ['{', '}', '[', ']', '`', "'", '"']
     for e in bibds.entries:
         try:
+            if zenodo and 'publisher' in bibds.entries[e].fields and bibds.entries[e].fields['publisher'].lower() == 'zenodo':
+                continue
+            if 'publisher' not in bibds.entries[e].fields and pubonly:
+                continue
             if 'title' in bibds.entries[e].fields:
                 t = bibds.entries[e].fields['title'].lower()
                 for c in unwanted:
                     t = t.replace(c, '')
+                if errata and 'erratum' in t or 'author correction' in t:
+                    continue
                 titlesds[t.lower()] = e
         except Exception as ex:
             sys.stderr.write(f"Error parsing entry: {e}\n")
             print(ex)
     return titlesds
 
-def bibtex_titles_fuzzy(bibds, verbose=False):
+def bibtex_titles_fuzzy(bibds, errata=False, zenodo=False, pubonly=False, verbose=False):
     """
     Convert the bibtex db to a list of titles. This strips all non 
     [A-Za-z0-9] characters.
@@ -95,9 +101,15 @@ def bibtex_titles_fuzzy(bibds, verbose=False):
         sys.stderr.write("Parsing bibtex\n")
     for e in bibds.entries:
         try:
+            if zenodo and 'publisher' in bibds.entries[e].fields and bibds.entries[e].fields['publisher'].lower() == 'zenodo':
+                continue
+            if 'publisher' not in bibds.entries[e].fields and pubonly:
+                continue
             if 'title' in bibds.entries[e].fields:
                 s = bibds.entries[e].fields['title'].lower()
                 t = re.sub(r'[\W_]+', '', s)
+                if errata and 'erratum' in t or 'author correction' in t:
+                    continue
                 titlesds[t.lower()] = e
         except Exception as ex:
             sys.stderr.write(f"Error parsing entry: {e}\n")

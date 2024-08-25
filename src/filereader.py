@@ -21,25 +21,32 @@ class FileReader:
 
         self.text.insert(tk.END, "Please choose a Google file and an ORCID file above.")
         self.fuzzier = tk.Checkbutton(self.frame, text="Use even fuzzier matching")
+        self.pubonly = tk.Checkbutton(self.frame, text="Only include publications with a publisher")
+        self.pubonly.select()
+        self.ignore_errata = tk.Checkbutton(self.frame, text="Ignore errata")
+        self.ignore_zenodo = tk.Checkbutton(self.frame, text="Ignore zenodo pubs")
         self.fuzzier.grid(row=0, columnspan=2)
+        self.pubonly.grid(row=1, columnspan=2)
+        self.ignore_errata.grid(row=2, column=0)
+        self.ignore_zenodo.grid(row=2, column=1)
 
         self.gsbutton = tk.Button(self.frame, text="Choose the Google Scholar file", fg='black',
                                   command=lambda: self.get_file("Google"))
-        self.gsbutton.grid(row=1, column=0)
+        self.gsbutton.grid(row=3, column=0)
         self.gsrefs = tk.Label(self.frame, text="No references read yet")
-        self.gsrefs.grid(row=1, column=1)
+        self.gsrefs.grid(row=3, column=1)
 
         self.ocbutton = tk.Button(self.frame, text="Choose the ORCID file", fg='black',
                                   command=lambda: self.get_file("ORCID"))
-        self.ocbutton.grid(row=2, column=0)
+        self.ocbutton.grid(row=4, column=0)
         self.ocrefs = tk.Label(self.frame, text="No references read yet")
-        self.ocrefs.grid(row=2, column=1)
+        self.ocrefs.grid(row=4, column=1)
         self.comp = tk.Button(self.frame, text="Compare Both", command=self.compare_refs, state="disabled")
         self.gnoto = tk.Button(self.frame, text="Google Not ORCID", command=self.google_not_orcid, state="disabled")
         self.onotg = tk.Button(self.frame, text="ORCID Not Google", command=self.orcid_not_google, state="disabled")
-        self.comp.grid(row=3, columnspan=2)
-        self.gnoto.grid(row=4, column=0)
-        self.onotg.grid(row=4, column=1)
+        self.comp.grid(row=5, columnspan=2)
+        self.gnoto.grid(row=6, column=0)
+        self.onotg.grid(row=6, column=1)
         self.google_file = None
         self.orcid_file = None
         self.google_bib = None
@@ -70,7 +77,7 @@ class FileReader:
             self.google_file = filename
             self.google_bib = parse_bibtex_file(self.google_file, False)
             if self.fuzzier:
-                self.google_titles = bibtex_titles_fuzzy(self.google_bib, False)
+                self.google_titles = bibtex_titles_fuzzy(self.google_bib, self.ignore_errata, self.ignore_zenodo, self.pubonly, False)
             else:
                 self.google_titles = bibtex_titles(self.google_bib, False)
             self.gsrefs.config(text=f"Read {len(self.google_titles)} references")
@@ -80,9 +87,9 @@ class FileReader:
             self.orcid_file = filename
             self.orcid_bib = parse_bibtex_file(self.orcid_file, False)
             if self.fuzzier:
-                self.orcid_titles = bibtex_titles_fuzzy(self.orcid_bib, False)
+                self.orcid_titles = bibtex_titles_fuzzy(self.orcid_bib, self.ignore_errata, self.ignore_zenodo, self.pubonly, False)
             else:
-                self.orcid_titles = bibtex_titles(self.orcid_bib, False)
+                self.orcid_titles = bibtex_titles(self.orcid_bib, self.ignore_errata, self.ignore_zenodo, self.pubonly,False)
 
             self.ocrefs.config(text=f"Read {len(self.orcid_titles)} references")
 
